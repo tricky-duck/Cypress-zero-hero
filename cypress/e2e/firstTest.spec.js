@@ -19,8 +19,23 @@ describe('Our first suite', () => { //open callback function
         cy.get('[data-cy="imputEmail1"]')
     })
 
+    it.only('second test', ()=> {
+        cy.visit('/')
+        cy.contains('Forms').click()
+        cy.contains('Form Layouts').click() 
+        cy.get('[data-cy="signInButton"]')
+        cy.contains('Sign in')
+        cy.contains('[status="warning"]', 'Sign in')
+        cy.get('#inputEmail3')
+            .parents('form')
+            .find('button')
+            .should('contain', "Sign in")
+            .parents('form')
+            .find('nb-checkbox')
+            .click()
+    })  
 })
-
+ 
 // describe('Our first suite', () => { //opencallback function
 
 //     describe ('Our suite section',() => {
@@ -38,20 +53,6 @@ describe('Our first suite', () => { //open callback function
 //         })
 
 //     })
-
-//     it('first test', () => {
-
-//     })
-//     it('second test', () => {
-        
-//     })
-//     it('third test', () => {
-        
-//     })
-
-// })
-
-// describe('Our second suite', () => { //opencallback function
 
 //     it('first test', () => {
 
