@@ -17,6 +17,12 @@ describe('Our first suite', () => { //open callback function
         cy.get('input[placeholder="Email"]#inputEmail1.input-full-width') // by tag name, attribute with value, ID and class name
         // The most recommended way by Cypress
         cy.get('[data-cy="imputEmail1"]')
+        // Test
+        cy.get('input[placeholder="Jane Doe"]')
+        cy.get('#exampleInputEmail1[nbinput][type="email"]')
+        cy.contains("Send")
+        cy.contains('[type="submit"]',"Send")
+
     })
 
     it.only('second test', ()=> {
@@ -26,13 +32,19 @@ describe('Our first suite', () => { //open callback function
         cy.get('[data-cy="signInButton"]')
         cy.contains('Sign in')
         cy.contains('[status="warning"]', 'Sign in')
+        
+        // Up and Down within DOM
         cy.get('#inputEmail3')
             .parents('form')
-            .find('button')
-            .should('contain', "Sign in")
-            .parents('form')
-            .find('nb-checkbox')
+            .find('button') //only in use with parent but supports selectors like get does(no text)
+            .should('contain', "Sign in") // Assert it has text
+            .parents('form') // Go Up
+            .find('nb-checkbox') // Search Down
             .click()
+
+        // Up/Down in DOM with Contains
+        cy.contains('nb-card',"Horizontal form").find('[type="password"]').click() // Find text in nb-cart and find element Down with exact selector
+
     })  
 })
  
