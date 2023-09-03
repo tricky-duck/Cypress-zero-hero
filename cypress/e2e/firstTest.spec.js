@@ -25,7 +25,7 @@ describe('Our first suite', () => { //open callback function
 
     })
 
-    it.only('second test', ()=> {
+    it('second test', ()=> {
         cy.visit('/')
         cy.contains('Forms').click()
         cy.contains('Form Layouts').click() 
@@ -44,6 +44,28 @@ describe('Our first suite', () => { //open callback function
 
         // Up/Down in DOM with Contains
         cy.contains('nb-card',"Horizontal form").find('[type="password"]').click() // Find text in nb-cart and find element Down with exact selector
+
+    })
+    it.only('then and wrap', () => {
+        cy.visit('/')
+        cy.contains('Forms').click()
+        cy.contains('Form Layouts').click() 
+
+        cy.contains('nb-card', "Horizontal form").then(firstForm =>{
+            const emailFirstForm = firstForm.find('[for="inputEmail3"]').text()
+            const pwdFirstForm = firstForm.find('[for="inputPassword3"]').text()
+            expect(emailFirstForm).to.equal('Email')
+            expect(pwdFirstForm).to.equal('Password')
+            cy.contains('nb-card',"Using the Grid").then(secondForm =>{
+                const emailSecondForm = secondForm.find('[for="inputEmail1"]').text()
+                const pwdSecondForm = secondForm.find('[for="inputPassword2"]').text()
+                expect(emailSecondForm).to.equal(emailFirstForm)
+                expect(pwdSecondForm).to.equal(pwdFirstForm)
+                cy.wrap(pwdSecondForm).should('contain',"Password")
+            })
+
+    })
+
 
     })  
 })
