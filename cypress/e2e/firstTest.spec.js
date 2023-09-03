@@ -51,7 +51,7 @@ describe('Our first suite', () => { //open callback function
         cy.contains('Forms').click()
         cy.contains('Form Layouts').click() 
 
-        cy.contains('nb-card', "Horizontal form").then(firstForm =>{
+        cy.contains('nb-card', "Horizontal form").then(firstForm =>{ // using then you're switching to the jquery
             const emailFirstForm = firstForm.find('[for="inputEmail3"]').text()
             const pwdFirstForm = firstForm.find('[for="inputPassword3"]').text()
             expect(emailFirstForm).to.equal('Email')
@@ -61,7 +61,7 @@ describe('Our first suite', () => { //open callback function
                 const pwdSecondForm = secondForm.find('[for="inputPassword2"]').text()
                 expect(emailSecondForm).to.equal(emailFirstForm)
                 expect(pwdSecondForm).to.equal(pwdFirstForm)
-                cy.wrap(pwdSecondForm).should('contain',"Password")
+                cy.wrap(pwdSecondForm).should('contain',"Password") // using wrap you're switching back to the cypress mode
             })
 
     })
