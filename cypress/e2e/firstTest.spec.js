@@ -46,7 +46,8 @@ describe('Our first suite', () => { //open callback function
         cy.contains('nb-card',"Horizontal form").find('[type="password"]').click() // Find text in nb-cart and find element Down with exact selector
 
     })
-    it.only('then and wrap', () => {
+
+    it('then and wrap', () => {
         cy.visit('/')
         cy.contains('Forms').click()
         cy.contains('Form Layouts').click() 
@@ -65,10 +66,60 @@ describe('Our first suite', () => { //open callback function
             })
 
     })
+})
+    it('invoke', () => {
+        cy.visit('/')
+        cy.contains('Forms').click()
+        cy.contains('Form Layouts').click() 
+        
+        //ex.1 verify text via should
+        cy.get('[for="exampleInputEmail1"]').should('contain', "Email address")
+       
+        //ex.2 verify text via then
+        cy.get('[for="exampleInputEmail1"]').then(label =>{
+        expect(label.text()).to.equal('Email address')
+       
+        //ex.3 with invoke command
+        cy.get('[for="exampleInputEmail1"]').invoke('text').then(text => {
+            expect(text).to.equal('Email address')
+        
+        //ex.4 verify tag value with invoke
+        cy.contains('nb-card', "Basic form")
+        .find('[class="custom-checkbox"]')
+        .click()
+        .invoke('attr', 'class')
+        // .should('contain','checked')
+        .then(classValue =>{
+        expect(classValue).to.contain('checked')
+       })
+    
+    })
+    })
+    })
+    it.only('assert property', () => {
+        cy.visit('/')
+        cy.contains('Forms').click()
+        cy.contains("Datepicker").click()
 
+        //with .then, assert the property with invoke
+        cy.contains('nb-card', "Common Datepicker")
+        .find('input').then(input => {
+            cy.wrap(input).click()
+            cy.get('nb-calendar-picker').contains('17').click()
+            cy.get(input).invoke('prop', 'value').should('contain', "Sep 17, 2023")
+
+        })
+        //without .then command
+        cy.contains('nb-card', "Common Datepicker")
+        .find('input').click()
+        .get('nb-calendar-picker').contains('18').click()
+        .get('[placeholder="Form Picker"][class="size-medium shape-rectangle"]')
+        .invoke('prop', 'value').should('contain', "Sep 18, 2023" )
+
+    })
 
     })  
-})
+
  
 // describe('Our first suite', () => { //opencallback function
 
