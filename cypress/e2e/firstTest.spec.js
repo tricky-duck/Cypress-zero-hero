@@ -1,5 +1,9 @@
 // test should start with keyword: describe() or context()
 /// <reference types="cypress" />
+
+const { wrap } = require("module")
+const { TRUE } = require("sass")
+
 describe('Our first suite', () => { //open callback function
 
     it('first test', () => {
@@ -24,8 +28,7 @@ describe('Our first suite', () => { //open callback function
         cy.contains('[type="submit"]',"Send")
 
     })
-
-    it('second test', ()=> {
+    it('second test', () => {
         cy.visit('/')
         cy.contains('Forms').click()
         cy.contains('Form Layouts').click() 
@@ -46,7 +49,6 @@ describe('Our first suite', () => { //open callback function
         cy.contains('nb-card',"Horizontal form").find('[type="password"]').click() // Find text in nb-cart and find element Down with exact selector
 
     })
-
     it('then and wrap', () => {
         cy.visit('/')
         cy.contains('Forms').click()
@@ -66,7 +68,7 @@ describe('Our first suite', () => { //open callback function
             })
 
     })
-})
+    })
     it('invoke', () => {
         cy.visit('/')
         cy.contains('Forms').click()
@@ -96,7 +98,7 @@ describe('Our first suite', () => { //open callback function
     })
     })
     })
-    it.only('assert property', () => {
+    it('assert property', () => {
         cy.visit('/')
         cy.contains('Forms').click()
         cy.contains("Datepicker").click()
@@ -117,7 +119,39 @@ describe('Our first suite', () => { //open callback function
         .invoke('prop', 'value').should('contain', "Sep 18, 2023" )
 
     })
+    it('Radio buttons', () => {
+        cy.visit('/')
+        cy.contains('Forms').click()
+        cy.contains('Form Layouts').click() 
 
+        cy.contains('nb-card', "Using the Grid").find('[type="radio"]').then(radiobtn =>{
+            cy.wrap(radiobtn)
+                .first()  //eq(0)
+                .check({force:true})
+                .should('be.checked')
+            cy.wrap(radiobtn)
+                .eq(1)
+                .check({force:true})
+            cy.wrap(radiobtn)
+                .first()
+                .should('not.be.checked')
+            cy.wrap(radiobtn)
+                .eq(2)
+                .should('be.disabled')
+        })
+    
+    })
+    it.only('check boxes', () => {
+        cy.visit('/')
+        cy.contains('Modal & Overlays').click()
+        cy.contains('Toastr').click() 
+
+        //cy.get('[type="checkbox"]').check({force:true}) //check checks boxes only, cannot uncheck
+        cy.get('[type="checkbox"]').then(aBox => {
+            cy.wrap(aBox).eq(0).click({force:true})
+            cy.wrap(aBox).eq(1).check({force:true}).should('be.checked')
+        })
+    })
     })  
 
  
