@@ -1,6 +1,7 @@
 // test should start with keyword: describe() or context()
 /// <reference types="cypress" />
 
+const { rgb } = require("d3-color")
 const { wrap } = require("module")
 const { TRUE } = require("sass")
 
@@ -153,7 +154,7 @@ describe('Our first suite', () => { //open callback function
         })
     })
 
-    it.only('datePicker improved logic', () => {
+    it('datePicker improved logic', () => {
         function selectDayFromCurrent(day){
             let date = new Date()
             date.setDate(date.getDate() + day)
@@ -182,6 +183,43 @@ describe('Our first suite', () => { //open callback function
             cy.wrap(input).invoke('prop', 'value').should('contain', dateAssert)
         })
 
+
+    })
+
+    it.only('dropdowns and list incl styles', () => {
+        cy.visit('/')
+        // #1
+        // cy.get('nav nb-select').click()
+        // cy.get('.options-list').contains("Dark").click()
+        // cy.get('nav nb-select').should('contain', "Dark")
+        // cy.get('nb-layout-header nav').should('have.css', 'background-color', 'rgb(34, 43, 69)')
+
+        //#2
+        cy.get('nav nb-select').then(dropdown => {
+            cy.wrap(dropdown).click()
+            cy.get('.options-list nb-option').each( (listItem, index) => {
+                let itemText = listItem.text().trim()
+
+                const colors = {
+                    "Light" : "rgb(255, 255, 255)",
+                    "Dark" : "rgb(34, 43, 69)",
+                    "Cosmic" : "rgb(50, 50, 89)",
+                    "Corporate" : "rgb(255, 255, 255)"
+                }
+                cy.wrap(listItem).click()
+                cy.wrap(dropdown).should('contain', itemText)
+                cy.get('nb-layout-header nav').should('have.css', 'background-color', colors[itemText])
+                if (index < 3){
+                    cy.wrap(dropdown).click()
+                }
+                
+
+            })
+        })
+
+        //#3
+        //user cy.select but only when tag is select
+        
 
     })
 })
