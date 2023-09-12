@@ -186,7 +186,7 @@ describe('Our first suite', () => { //open callback function
 
     })
 
-    it.only('dropdowns and list incl styles', () => {
+    it('dropdowns and list incl styles', () => {
         cy.visit('/')
         // #1
         // cy.get('nav nb-select').click()
@@ -206,21 +206,70 @@ describe('Our first suite', () => { //open callback function
                     "Cosmic" : "rgb(50, 50, 89)",
                     "Corporate" : "rgb(255, 255, 255)"
                 }
+
                 cy.wrap(listItem).click()
                 cy.wrap(dropdown).should('contain', itemText)
                 cy.get('nb-layout-header nav').should('have.css', 'background-color', colors[itemText])
                 if (index < 3){
                     cy.wrap(dropdown).click()
                 }
-                
-
             })
+
+        })
+        //#3
+        //user cy.select but only when DOM tag select exists. The test app has no select tags to try it out.
+    })
+
+    it.only('web tables', () => {
+        cy.visit('/')
+        cy.contains('Tables & Data').click()
+        cy.contains('Smart Table').click() 
+        
+        // Ex. 1
+        cy.get('table').contains('tr', "Larry").then(tableRow => {
+            cy.wrap(tableRow).find('.nb-edit').click()
+            cy.wrap(tableRow).find('[placeholder="Age"]').clear().type('25')
+            cy.wrap(tableRow).find('.nb-checkmark').click()
+            cy.wrap(tableRow).find('td').eq(6).should('contain', "25")
         })
 
-        //#3
-        //user cy.select but only when tag is select
+        // Ex. 2
+        cy.get('thead').find('.nb-plus').click()
+        cy.get('table-cell-edit-mode').find('[placeholder="First Name"]').type('First Name')
+        cy.get('table-cell-edit-mode').find('[placeholder="Last Name"]').type('Last Name')
+        cy.get('ng2-st-actions').find('.nb-checkmark').click()
+        cy.get('tbody').find('tr').eq(0).then(firstRow => {
+            cy.wrap(firstRow).find('td').eq(2).should('contain', 'First Name')
+            cy.wrap(firstRow).find('td').eq(3).should('contain', 'Last Name')
+        })
         
+        // Ex. 2.1
+        cy.get('thead').find('.nb-plus').click()
+        cy.get('thead').find('tr').eq(2).then(tableRow => {
+            cy.wrap(tableRow).find('[placeholder="First Name"]').type('First Name')
+            cy.wrap(tableRow).find('[placeholder="Last Name"]').type('Last Name')
+            cy.wrap(tableRow).find('.nb-checkmark').click()
+        })
+        cy.get('tbody tr').first().find('td').then(firstRow => {
+            cy.wrap(firstRow).eq(2).should('contain', 'First Name')
+            cy.wrap(firstRow).eq(3).should('contain', 'Last Name')
+        
+        })
 
-    })
+        // ex. 3
+        const age = [20, 30, 40, 200]
+        cy.wrap(age).each(age => {
+            cy.get('thead [placeholder="Age"]').clear().type(age)
+            cy.wait(500)
+            cy.get('tbody tr').each((tableRow) => {
+                if (age == 200){
+                    cy.wrap(tableRow).should('contain', 'No data found')
+                } else {
+                    cy.wrap(tableRow).find('td').eq(6).should('contain', age)
+                }
+
+            })
+        })         
+})
 })
       
