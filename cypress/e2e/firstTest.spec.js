@@ -220,12 +220,12 @@ describe('Our first suite', () => { //open callback function
         //user cy.select but only when DOM tag select exists. The test app has no select tags to try it out.
     })
 
-    it.only('web tables', () => {
+    it('web tables', () => {
         cy.visit('/')
         cy.contains('Tables & Data').click()
         cy.contains('Smart Table').click() 
         
-        // Ex. 1
+        // Ex. 1 update the cell
         cy.get('table').contains('tr', "Larry").then(tableRow => {
             cy.wrap(tableRow).find('.nb-edit').click()
             cy.wrap(tableRow).find('[placeholder="Age"]').clear().type('25')
@@ -233,7 +233,7 @@ describe('Our first suite', () => { //open callback function
             cy.wrap(tableRow).find('td').eq(6).should('contain', "25")
         })
 
-        // Ex. 2
+        // Ex. 2 add a row
         cy.get('thead').find('.nb-plus').click()
         cy.get('table-cell-edit-mode').find('[placeholder="First Name"]').type('First Name')
         cy.get('table-cell-edit-mode').find('[placeholder="Last Name"]').type('Last Name')
@@ -243,7 +243,7 @@ describe('Our first suite', () => { //open callback function
             cy.wrap(firstRow).find('td').eq(3).should('contain', 'Last Name')
         })
         
-        // Ex. 2.1
+        // Ex. 2.1 add a row
         cy.get('thead').find('.nb-plus').click()
         cy.get('thead').find('tr').eq(2).then(tableRow => {
             cy.wrap(tableRow).find('[placeholder="First Name"]').type('First Name')
@@ -256,7 +256,7 @@ describe('Our first suite', () => { //open callback function
         
         })
 
-        // ex. 3
+        // ex. 3 filter
         const age = [20, 30, 40, 200]
         cy.wrap(age).each(age => {
             cy.get('thead [placeholder="Age"]').clear().type(age)
@@ -271,5 +271,40 @@ describe('Our first suite', () => { //open callback function
             })
         })         
 })
+// As there's no special handling for the Tooltips in cypress, you can only find the element via Cypress runner and assert is exists
+    it('tootip', () => {
+        cy.visit('/')
+        cy.contains('Modal & Overlays').click()
+        cy.contains('Tooltip').click()
+
+        cy.contains('nb-card', 'Colored Tooltips')
+        .contains('Default').click()
+        cy.get('nb-tooltip').should('contain', 'This is a tooltip')
+
+    })
+
+    it.only('dialog from the browser', () => {
+        cy.visit('/')
+        cy.contains('Tables & Data').click()
+        cy.contains('Smart Table').click() 
+
+        cy.get('tbody tr').first().find('.nb-trash').click()
+        
+        //1. wont tell you if the window is not shown
+        // cy.on('window:confirm', (confirm) => {
+        //     expect(confirm).to.equal('Are you sure you want to delete?')
+        // })
+
+        //2.if window is not shown, it fails to check the text
+        // const stub = cy.stub()
+        // cy.on('window:confirm', stub)
+        // cy.get('tbody tr').first().find('.nb-trash').click().then(() => {
+        //     expect(stub.getCall(0).to.be.calledWith('Are you sure you want to delete?'))
+        // })
+
+        //3. click Cancel btn in the browser pop-up
+        cy.get('tbody tr').first().find('.nb-trash').click()
+        cy.on('window:confirm', () => false)
+    })
 })
       
