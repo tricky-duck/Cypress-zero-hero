@@ -42,6 +42,7 @@ describe('Our first suite', () => { //open callback function
             .parents('form')
             .find('button') //only in use with parent but supports selectors like get does(no text)
             .should('contain', "Sign in") // Assert it has text
+            .should('have.class', 'appearance-filled size-medium')
             .parents('form') // Go Up
             .find('nb-checkbox') // Search Down
             .click()
@@ -76,16 +77,22 @@ describe('Our first suite', () => { //open callback function
         cy.contains('Form Layouts').click() 
         
         //ex.1 verify text via should
-        cy.get('[for="exampleInputEmail1"]').should('contain', "Email address")
+        cy.get('[for="exampleInputEmail1"]')
+        .should('contain', "Email address")
+        .should('have.class', 'label')
+        .and('have.text', 'Email address' )
        
         //ex.2 verify text via then
         cy.get('[for="exampleInputEmail1"]').then(label =>{
         expect(label.text()).to.equal('Email address')
+        expect(label).to.have.class('label')
+        expect(label).to.have.text('Email address')
        
         //ex.3 with invoke command
         cy.get('[for="exampleInputEmail1"]').invoke('text').then(text => {
             expect(text).to.equal('Email address')
-        
+            expect(text).to.contain('Email address')
+
         //ex.4 verify tag value with invoke
         cy.contains('nb-card', "Basic form")
         .find('[class="custom-checkbox"]')
@@ -154,7 +161,7 @@ describe('Our first suite', () => { //open callback function
         })
     })
 
-    it('datePicker improved logic', () => {
+    it.only('datePicker improved logic', () => {
         function selectDayFromCurrent(day){
             let date = new Date()
             date.setDate(date.getDate() + day)
@@ -181,6 +188,7 @@ describe('Our first suite', () => { //open callback function
             cy.wrap(input).click()
             let dateAssert = selectDayFromCurrent(300)
             cy.wrap(input).invoke('prop', 'value').should('contain', dateAssert)
+            cy.wrap(input).should('have.value',dateAssert )
         })
 
 
@@ -283,7 +291,7 @@ describe('Our first suite', () => { //open callback function
 
     })
 
-    it.only('dialog from the browser', () => {
+    it('dialog from the browser', () => {
         cy.visit('/')
         cy.contains('Tables & Data').click()
         cy.contains('Smart Table').click() 
