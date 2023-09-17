@@ -1,6 +1,6 @@
 import { onDatePickerPage } from "../support/pageObjects/datePickerPage"
 import { onFormLayoutsPage } from "../support/pageObjects/formLayoutsPage"
-import { NavigationPage, navigateTo } from "../support/pageObjects/navigation"
+import { navigateTo } from "../support/pageObjects/navigation"
 import { onSmartTablePage } from "../support/pageObjects/smartTablePage"
 
 
