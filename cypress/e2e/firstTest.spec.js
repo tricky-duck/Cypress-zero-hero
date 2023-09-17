@@ -161,7 +161,7 @@ describe('Our first suite', () => { //open callback function
         })
     })
 
-    it.only('datePicker improved logic', () => {
+    it('datePicker improved logic', () => {
         function selectDayFromCurrent(day){
             let date = new Date()
             date.setDate(date.getDate() + day)
@@ -307,12 +307,13 @@ describe('Our first suite', () => { //open callback function
         // const stub = cy.stub()
         // cy.on('window:confirm', stub)
         // cy.get('tbody tr').first().find('.nb-trash').click().then(() => {
-        //     expect(stub.getCall(0).to.be.calledWith('Are you sure you want to delete?'))
+        //     expect(stub.getCall(0)).to.be.calledWith('Are you sure you want to delete?')
         // })
 
         //3. click Cancel btn in the browser pop-up
         cy.get('tbody tr').first().find('.nb-trash').click()
         cy.on('window:confirm', () => false)
     })
+
 })
       
