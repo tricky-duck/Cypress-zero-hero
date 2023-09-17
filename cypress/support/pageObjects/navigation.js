@@ -9,7 +9,6 @@ function selectkMenuGroup(page){
 }
 
 
-
 export class NavigationPage{
 
     FormLayoutsPage(){
