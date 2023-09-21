@@ -10,7 +10,7 @@
     "url": "https://github.com/akveo/ngx-admin/issues"
   },
   "scripts": {
-    // you can add scripts to start the server and cypress with one command, need a package
+//you can add scripts to start the server and cypress with one command, need a package
     //called start-server-and-test, comand to run: npm run cypress:e2e
     "cypress:e2e": "start-test start http-get://localhost:4200 cypress:run",
     
