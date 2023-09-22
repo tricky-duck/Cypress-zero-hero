@@ -1,9 +1,0 @@
-// api test fixture
-
-{
-    "tags": [
-        "cypress",
-        "automation",
-        "testing"
-    ]
-}

@@ -10,8 +10,6 @@
     "url": "https://github.com/akveo/ngx-admin/issues"
   },
   "scripts": {
-    "cypress:e2e": "start-test start http-get://localhost:4200 cypress:run",
-    
     "ng": "ng",
     "conventional-changelog": "conventional-changelog",
     "start": "run-script-os",

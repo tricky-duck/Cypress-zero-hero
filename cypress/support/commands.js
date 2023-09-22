@@ -28,27 +28,3 @@ Cypress.Commands.add('openHomePage', () => {
     cy.visit('/')
 })
 
-// api headless login instead of ui, add a token to the localStorage
-Cypress.Commands.add('loginToApplication', () => {
-    
-    const userCredentials = {
-        "user": {
-            "email": Cypress.env("username"),
-            "password": Cypress.env("password")
-        }
-    }
-
-    cy.request('POST', Cypress.env('apiUrl')+'/api/users/login', userCredentials)
-        .its('body').then( body => {
-            const token = body.user.token
-            // save the token as an alias to reuse it in tests as @token
-            cy.wrap(token).as('token')
-            cy.visit('/', {
-                onBeforeLoad (win){
-                    win.localStorage.setItem('jwtToken', token)
-                }
-            })
-
-        })
-    
-})
